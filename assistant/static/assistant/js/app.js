@@ -219,7 +219,13 @@ document.addEventListener("DOMContentLoaded", () => {
 
         const bubble = document.createElement("div");
         bubble.className = "bubble";
-        bubble.textContent = text;
+        
+        if (role === "model") {
+            const html = window.marked.parse(text);
+            bubble.innerHTML = window.DOMPurify.sanitize(html);
+        } else {
+            bubble.textContent = text;
+        }
 
         row.appendChild(bubble);
         messages.appendChild(row);
