@@ -1,0 +1,300 @@
+
+{% load static %}
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#111022">
+
+    <title>Noir AI | Your Cozy AI Assistant</title>
+
+    <link rel="stylesheet"
+          href="{% static 'assistant/css/style.css' %}">
+
+    <script defer
+            src="{% static 'assistant/js/app.js' %}">
+    </script>
+</head>
+
+<body>
+<div class="app-layout">
+
+    <!-- SIDEBAR - UNCHANGED -->
+    <aside class="sidebar" id="sidebar">
+
+        <div class="brand">
+            <div class="brand-cat">
+                <img
+                    src="{% static 'assistant/img/cat.png' %}"
+                    alt="Noir AI sitting black cat"
+                >
+            </div>
+
+            <div>
+                <h2>Noir AI <span class="sparkle">✦</span></h2>
+                <small>Gemini Assistant</small>
+            </div>
+        </div>
+
+        <nav class="navigation">
+            <button class="nav-item active" id="newChatBtn">
+                <span>✦</span> New Chat
+            </button>
+
+            <button class="nav-item" id="historyBtn">
+                <span>◷</span> Chat History
+            </button>
+
+            <button class="nav-item" id="settingsBtn">
+                <span>⚙</span> Settings
+            </button>
+
+            <button class="nav-item" id="aboutBtn">
+                <span>ⓘ</span> About
+            </button>
+        </nav>
+
+        <div class="sidebar-bottom">
+            <button class="install-button"
+                    id="installBtn" hidden>
+                ↓ Install App
+            </button>
+
+            <p class="sidebar-note">
+                A little AI companion for everyday questions.
+            </p>
+        </div>
+    </aside>
+
+    <!-- MAIN CONTENT -->
+    <main class="main-content">
+
+        <header class="topbar">
+            <button class="icon-button mobile-menu"
+                    id="menuBtn"
+                    aria-label="Open menu">
+                ☰
+            </button>
+
+            <div class="status">
+                <span class="status-dot"></span>
+                <span id="connectionStatus">Online</span>
+            </div>
+
+            <div class="top-actions">
+                <button class="icon-button"
+                        id="themeBtn"
+                        aria-label="Toggle theme"
+                        title="Change theme">
+                    ☀
+                </button>
+
+                <div class="profile">M</div>
+            </div>
+        </header>
+
+        <section class="content-area">
+
+            <!-- HOME / CHAT PAGE -->
+            <div id="chatPage" class="page active-page">
+
+                <div class="welcome-card" id="welcomeCard">
+
+                    <!-- NEW CAT MASCOT PNG -->
+                    <div class="welcome-art">
+                        <div class="mascot-container">
+                            <img
+                                src="{% static 'assistant/img/meow.png' %}"
+                                alt="Noir AI black cat mascot"
+                                class="meow-mascot"
+                            >
+                        </div>
+                    </div>
+
+                    <!-- WELCOME MESSAGE -->
+                    <div class="welcome-text">
+
+                        <p class="eyebrow">
+                            YOUR COZY AI SPACE
+                        </p>
+
+                        <h1>
+                            Hello, I'm
+                            <span>Noir! ✦</span>
+                        </h1>
+
+                        <p>
+                            Your little AI assistant powered by
+                            Google Gemini.
+                        </p>
+
+                        <p class="subline">
+                            Ask me anything!
+                        </p>
+
+                        <!-- SUGGESTED PROMPTS -->
+                        <div class="suggestions">
+
+                            <button
+                                data-prompt="Explain photosynthesis in simple terms">
+                                💡 Explain a topic
+                            </button>
+
+                            <button
+                                data-prompt="Help me write a friendly email">
+                                ✍ Help with writing
+                            </button>
+
+                            <button
+                                data-prompt="Help me solve a programming problem">
+                                ✧ Solve a problem
+                            </button>
+
+                            <button
+                                data-prompt="Give me five creative project ideas">
+                                ✨ Give me ideas
+                            </button>
+
+                            <button
+                                data-prompt="Summarize this topic in simple words">
+                                ▤ Summarize text
+                            </button>
+
+                            <button
+                                data-prompt="Translate this text into Filipino">
+                                🌐 Translate
+                            </button>
+
+                        </div>
+                    </div>
+                </div>
+
+                <!-- CHAT MESSAGES -->
+                <div class="chat-messages"
+                     id="chatMessages"
+                     aria-live="polite">
+                </div>
+
+                <!-- CHAT INPUT -->
+                <div class="chat-bottom">
+
+                    <form id="chatForm" class="chat-form">
+                        {% csrf_token %}
+
+                        <textarea
+                            id="messageInput"
+                            placeholder="Ask me anything..."
+                            rows="1"
+                            maxlength="4000"
+                            aria-label="Message"></textarea>
+
+                        <button
+                            type="submit"
+                            class="send-button"
+                            id="sendBtn"
+                            aria-label="Send message">
+                            ➤
+                        </button>
+                    </form>
+
+                    <p class="disclaimer">
+                        Responses are generated by Google Gemini.
+                        Always verify important information.
+                    </p>
+                </div>
+
+            </div>
+
+            <!-- CHAT HISTORY -->
+            <div id="historyPage" class="page">
+                <div class="panel">
+                    <h1>Chat History ◷</h1>
+
+                    <p>
+                        Continue one of your previous conversations.
+                    </p>
+
+                    <div id="historyList"
+                         class="history-list">
+                    </div>
+                </div>
+            </div>
+
+            <!-- SETTINGS -->
+            <div id="settingsPage" class="page">
+                <div class="panel">
+
+                    <h1>Settings ⚙</h1>
+
+                    <p>
+                        Make Noir AI feel more like your space.
+                    </p>
+
+                    <div class="setting-row">
+                        <div>
+                            <h3>Appearance</h3>
+                            <p>Choose your preferred theme.</p>
+                        </div>
+
+                        <select id="themeSelect">
+                            <option value="dark">Dark</option>
+                            <option value="light">Light</option>
+                        </select>
+                    </div>
+
+                    <div class="setting-row">
+                        <div>
+                            <h3>Chat history</h3>
+                            <p>
+                                Clear saved conversations
+                                on this device.
+                            </p>
+                        </div>
+
+                        <button
+                            id="clearHistoryBtn"
+                            class="danger-button">
+                            Clear History
+                        </button>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- ABOUT -->
+            <div id="aboutPage" class="page">
+                <div class="panel">
+
+                    <h1>About Noir AI ✦</h1>
+
+                    <p>
+                        Noir AI is a cat-themed AI assistant
+                        web application developed using
+                        Django and Google's Gemini API.
+                    </p>
+
+                    <p>
+                        The application supports conversations,
+                        light and dark themes, chat history,
+                        and Progressive Web App features.
+                    </p>
+
+                    <p>
+                        Built as an individual Django and
+                        PWA development activity.
+                    </p>
+
+                </div>
+            </div>
+
+        </section>
+    </main>
+</div>
+
+<!-- MOBILE SIDEBAR BACKDROP -->
+<div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+</body>
+</html>
